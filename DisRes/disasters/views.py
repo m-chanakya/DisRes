@@ -48,5 +48,12 @@ class SOSViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         return SOS.objects.filter(disaster__status = True)
-
-
+    
+class ResponseViewSet(viewsets.ModelViewSet):
+    serializer_class = SOSSerializer
+    permission_classes = (permissions.IsAuthenticated,
+                          IsOwnerSelf,
+                          )
+    
+    def get_queryset(self):
+        return SOS.objects.filter(disaster__status = True)
