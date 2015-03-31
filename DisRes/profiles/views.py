@@ -12,11 +12,11 @@ from django.contrib.auth import authenticate, login, logout
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsUserSelf)
+    permission_classes = (IsUserSelf,)
     
 class OrganisationViewSet(viewsets.ModelViewSet):
-    serializer_class = OrganisationSerializer
-    permission_classes = (IsOrganisationSelf)
+    queryset = Organisation.objects.all()
+    permission_classes = (IsOrganisationSelf,)
     
     def get_serializer_class(self):
         if self.action == 'list':

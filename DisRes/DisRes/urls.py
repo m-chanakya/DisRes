@@ -7,7 +7,6 @@ router = routers.DefaultRouter()
 
 router.register(r'users', UserViewSet)
 router.register(r'organisations', OrganisationViewSet)
-router.register(r'users', UserViewSet)
 
 urlpatterns = [ 
     url(r'^', include(router.urls)),

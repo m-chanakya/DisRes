@@ -16,7 +16,7 @@ class Organisation(models.Model):
         ("NGOM", "NGO Medical"),
     )
 
-    user = models.OnetoOneField(User)
+    user = models.OneToOneField(User)
     org_name = models.CharField(max_length = 50)
     org_type = models.CharField(max_length = 4, choices = TYPES)
     description = models.TextField()
