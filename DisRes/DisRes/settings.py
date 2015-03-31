@@ -85,9 +85,9 @@ MIDDLEWARE_CLASSES = (
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
-    'PAGINATE_BY': 10,
-    'PAGINATE_BY_PARAM': 'page_size',
-    'MAX_PAGINATE_BY': 50,
+    #'PAGINATE_BY': 10,
+    #'PAGINATE_BY_PARAM': 'page_size',
+    #'MAX_PAGINATE_BY': 50,
     'DEFAULT_AUTHENTICATION_CLASSES': (
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
