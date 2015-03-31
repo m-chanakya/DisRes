@@ -1,3 +1,56 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework import permissions
+from profiles.serializers import *
+from profiles.models import Organisation
+from django.contrib.auth.models import User
+from profiles.permissions import *
 
-# Create your views here.
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.contrib.auth import authenticate, login, logout
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsUserSelf)
+    
+class OrganisationViewSet(viewsets.ModelViewSet):
+    serializer_class = OrganisationSerializer
+    permission_classes = (IsOrganisationSelf)
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return OrganisationListSerializer
+        return OrganisationSerializer
+    
+def logged_in(user):
+    response = {"status" : "logged in"}
+    if hasattr(user, 'organisation'):
+        response["id"] = user.organisation.id
+        response["user_type"] = "organisation"
+    else:
+        response["id"] = user.id
+        response["user_type"] = "user"
+    return response
+
+
+class AuthView(APIView):
+    def get(self, request):
+        if request.user.is_authenticated():
+            return Response(logged_in(request.user))
+        else:
+            return Response({"status" : "not logged in"})
+
+    def post(self, request, *args, **kwargs):
+        username = request.data['username']
+        password = request.data['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return Response(logged_in(user))
+        else:
+            return Response({"status" : "invalid credentials"})
+
+    def delete(self, request, *args, **kwargs):
+        logout(request)
+        return Response({"status" : "logged out"})
