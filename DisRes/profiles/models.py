@@ -14,6 +14,7 @@ class Organisation(models.Model):
         ("NGOS", "NGO Shelter"),
         ("NGOR", "NGO Rescue"),
         ("NGOM", "NGO Medical"),
+        ("MISC", "Miscellaneous")
     )
 
     user = models.OneToOneField(User)

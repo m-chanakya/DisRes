@@ -7,6 +7,23 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'password', 'email')
         extra_kwargs = { 'password': {'write_only': True} }
+        
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            if attr == 'password':
+                instance.set_password(value)
+            else:
+                setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 def create_user(validated_data):
     user_data = validated_data.pop('user')
@@ -16,11 +33,12 @@ def create_user(validated_data):
 def update_user(instance, validated_data):
     user_data = validated_data.pop('user')
     user = instance.user
-    user.username = user_data.get('username', user.username)
-    user.email = user_data.get('email', user.email)
-    if user_data.get('password') is not None:
-        user.set_password(user_data.get('password'))
-    user.save()
+    for attr, value in user_data.items():
+        if attr == 'password':
+            user.set_password(value)
+        else:
+            setattr(user, attr, value)
+        user.save()
     return validated_data
 
 class OrganisationListSerializer(serializers.ModelSerializer):
@@ -39,11 +57,7 @@ class OrganisationSerializer(serializers.ModelSerializer):
         return org
     def update(self, instance, validated_data):
         org_data = update_user(instance, validated_data)
-        instance.org_name = org_data.get('org_name', instance.org_name)
-        instance.org_type = org_data.get('org_type', instance.org_type)
-        instance.description = org_data.get('description', instance.description)
-        instance.address = org_data.get('address', instance.address)
-        instance.latitude = org_data.get('latitude', instance.latitude)
-        instance.longitude = org_data.get('longitude', instance.longitude)
+        for attr, value in org_data.items():
+            setattr(instance, attr, value)
         instance.save()
         return instance
