@@ -9,10 +9,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login, logout
 
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsUserSelf,)
+    
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        user = self.request.data
+        user = authenticate(username=user['username'], password=user['password'])
+        login(self.request, user)
     
 class OrganisationViewSet(viewsets.ModelViewSet):
     queryset = Organisation.objects.all()
@@ -22,6 +29,12 @@ class OrganisationViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return OrganisationListSerializer
         return OrganisationSerializer
+    
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        user = self.request.data['user']
+        user = authenticate(username=user['username'], password=user['password'])
+        login(self.request, user)
     
 def logged_in(user):
     response = {"status" : "logged in"}
