@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 
+*.sqlite3
+/DisRes/profiles/migrations/*
+/DisRes/disasters/migrations/*
+
 # C extensions
 *.so
 

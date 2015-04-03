@@ -20,6 +20,7 @@ class Disaster(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=6)
     longitude = models.DecimalField(max_digits=10, decimal_places=6)
     status = models.BooleanField(default = True)
+    verified = models.BooleanField(default = False)
 
     def __unicode__(self):
         return dis_type + ' ' + str(created)

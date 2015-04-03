@@ -38,7 +38,10 @@ class OrganisationViewSet(viewsets.ModelViewSet):
     
 def logged_in(user):
     response = {"status" : "logged in"}
-    if hasattr(user, 'organisation'):
+    if user.is_superuser:
+        response["id"] = user.id
+        response["user_type"] = "admin"
+    elif hasattr(user, 'organisation'):
         response["id"] = user.organisation.id
         response["user_type"] = "organisation"
     else:
