@@ -20,4 +20,5 @@ urlpatterns = [
     #url('sos/(?P<disaster>\d+)/$', SOSViewSet.as_view()),
     #url('responses/(?P<disaster>\d+)/(?P<sos>\d+)/$', ResponseViewSet.as_view()),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

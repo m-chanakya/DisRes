@@ -7,8 +7,8 @@ class Disaster(models.Model):
         ("EQ", "Earthquake"),
         ("FI", "Fire"),
         ("FL", "Flood"),
-        ("TSU", "Tsunami Specific"),
-        ("CYC", "Cyclone Specific"),
+        ("TSU", "Tsunami"),
+        ("CYC", "Cyclone"),
         ("LS", "Landslide"),
     )
 
@@ -23,7 +23,7 @@ class Disaster(models.Model):
     verified = models.BooleanField(default = False)
 
     def __unicode__(self):
-        return dis_type + ' ' + str(created)
+        return self.dis_type + ' ' + str(self.created)
 
 class Observation(models.Model):
     class Meta:
@@ -38,7 +38,7 @@ class Observation(models.Model):
     longitude = models.DecimalField(max_digits=10, decimal_places=6)
     
     def __unicode__(self):
-        return str(created) + ' ' + self.user.username
+        return str(self.created) + ' ' + self.user.username
 
 class SOS(models.Model):
     class Meta:
@@ -52,7 +52,7 @@ class SOS(models.Model):
     longitude = models.DecimalField(max_digits=10, decimal_places=6)
     
     def __unicode__(self):
-        return str(created) + ' ' + self.user.username
+        return str(self.created) + ' ' + self.user.username
 
 class Response(models.Model):
     AID_TYPES = (
@@ -69,3 +69,6 @@ class Response(models.Model):
     org = models.ForeignKey(Organisation)
     aid_type = models.CharField(max_length = 1, choices = AID_TYPES)
     response = models.TextField()
+    
+    def __unicode__(self):
+        return str(self.created) + ' ' + self.org.org_name

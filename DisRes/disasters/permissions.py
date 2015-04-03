@@ -20,13 +20,13 @@ class IsOrgSelf(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.user == request.user
+        return obj.org.user == request.user
     
 class IsAdminOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-        elif request.method in ('PATCH'):
+        elif request.method in ['PATCH', 'DELETE']:
             return request.user.is_superuser
         else:
             return False
