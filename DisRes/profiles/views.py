@@ -35,6 +35,7 @@ class OrganisationViewSet(viewsets.ModelViewSet):
         user = self.request.data['user']
         user = authenticate(username=user['username'], password=user['password'])
         login(self.request, user)
+        return Response(logged_in(user))
     
 def logged_in(user):
     response = {"status" : "logged in"}

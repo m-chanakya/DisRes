@@ -32,7 +32,7 @@ class Observation(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     disaster = models.ForeignKey(Disaster)
     user = models.ForeignKey(User)
-    #image
+    image = models.ImageField(upload_to = 'photos/%Y/%m/%d', max_length = 100)
     description = models.TextField()
     latitude = models.DecimalField(max_digits=10, decimal_places=6)
     longitude = models.DecimalField(max_digits=10, decimal_places=6)
