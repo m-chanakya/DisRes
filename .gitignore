@@ -5,6 +5,7 @@ __pycache__/
 *.sqlite3
 /DisRes/profiles/migrations/*
 /DisRes/disasters/migrations/*
+/DisRes/media/*
 
 # C extensions
 *.so
