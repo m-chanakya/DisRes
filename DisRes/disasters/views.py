@@ -81,7 +81,7 @@ class ObservationViewSet(viewsets.ModelViewSet):
         
 class SOSViewSet(viewsets.ModelViewSet):
     serializer_class = SOSSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+    permission_classes = (permissions.IsAuthenticated,
                           IsOwnerSelf,
                           )
     
@@ -106,11 +106,16 @@ class SOSViewSet(viewsets.ModelViewSet):
                 (sos.disaster.dis_type == 'LS' and org.org_type in ['NGOS']):
                     ids.append(sos.id)
             queryset = queryset.filter(pk__in=ids)
-        disaster = self.request.data.get('disaster', None)
-        if disaster is not None:
-            disaster = Disaster.objects.get(pk=disaster)
-            queryset = queryset.filter(disaster=disaster)
-        return queryset
+
+        elif self.request.user.is_superuser:
+            disaster = self.request.data.get('disaster', None)
+            if disaster is not None:
+                disaster = Disaster.objects.get(pk=disaster)
+                queryset = queryset.filter(disaster=disaster)
+            return queryset
+
+        else:
+            queryset = queryset,filter(user = self.request.user)
     
     def perform_create(self, serializer):
         lat = self.request.data["latitude"]
