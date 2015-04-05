@@ -87,6 +87,7 @@ class SOSViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         queryset = SOS.objects.filter(disaster__status = True)
+        print queryset
         if self.request.user.is_superuser:
             queryset = queryset.filter(disaster__verified = False)
         else:
@@ -112,10 +113,12 @@ class SOSViewSet(viewsets.ModelViewSet):
             if disaster is not None:
                 disaster = Disaster.objects.get(pk=disaster)
                 queryset = queryset.filter(disaster=disaster)
-            return queryset
 
         else:
+            print queryset
             queryset = queryset.filter(user = self.request.user)
+            
+        return queryset
     
     def perform_create(self, serializer):
         lat = self.request.data["latitude"]
