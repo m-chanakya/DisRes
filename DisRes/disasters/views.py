@@ -34,10 +34,10 @@ class DisasterViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Disaster.objects.filter(status = True)
         if self.request.user.is_superuser:
-            queryset.filter(verified = False)
+            queryset = queryset.filter(verified = False)
             return queryset
         else:
-            queryset.filter(verified = True)
+            queryset = queryset.filter(verified = True)
         lat = self.request.data.get('lat', None)
         lon = self.request.data.get('lon', None)
         if lat is not None and lon is not None:
@@ -57,9 +57,9 @@ class ObservationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Observation.objects.filter(disaster__status = True)
         if self.request.user.is_superuser:
-            queryset.filter(disaster__verified = False)
+            queryset = queryset.filter(disaster__verified = False)
         else:
-            queryset.filter(disaster__verified = True)
+            queryset = queryset.filter(disaster__verified = True)
         disaster = self.request.data.get('disaster', None)
         if disaster is not None:
             disaster = Disaster.objects.get(pk=disaster)
@@ -88,9 +88,9 @@ class SOSViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = SOS.objects.filter(disaster__status = True)
         if self.request.user.is_superuser:
-            queryset.filter(disaster__verified = False)
+            queryset = queryset.filter(disaster__verified = False)
         else:
-            queryset.filter(disaster__verified = True)
+            queryset = queryset.filter(disaster__verified = True)
         if hasattr(self.request.user, 'organisation'):
             org = self.request.user.organisation
             if org.org_type in ['P', 'H', 'NGOR', 'NGOM']:
