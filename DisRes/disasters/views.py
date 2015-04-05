@@ -115,7 +115,7 @@ class SOSViewSet(viewsets.ModelViewSet):
             return queryset
 
         else:
-            queryset = queryset,filter(user = self.request.user)
+            queryset = queryset.filter(user = self.request.user)
     
     def perform_create(self, serializer):
         lat = self.request.data["latitude"]
