@@ -7,10 +7,14 @@ class DisasterSerializer(serializers.ModelSerializer):
         model = Disaster
         
 class ObservationSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    disaster = DisasterSerializer()
     class Meta:
         model = Observation
         
 class SOSSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    disaster = DisasterSerializer()
     class Meta:
         model = SOS
         
