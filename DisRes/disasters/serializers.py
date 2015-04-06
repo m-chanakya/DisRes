@@ -11,15 +11,18 @@ class ObservationSerializer(serializers.ModelSerializer):
     disaster = DisasterSerializer()
     class Meta:
         model = Observation
+        extra_kwargs = { 'user': {'read_only': True}, 'disaster': {'read_only': True}}
         
 class SOSSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     disaster = DisasterSerializer()
     class Meta:
         model = SOS
+        extra_kwargs = { 'user': {'read_only': True}, 'disaster': {'read_only': True}}
         
 class ResponseSerializer(serializers.ModelSerializer):
     sos = SOSSerializer()
     org = OrganisationSerializer()
     class Meta:
         model = Response
+        extra_kwargs = {'org': {'read_only': True}}
