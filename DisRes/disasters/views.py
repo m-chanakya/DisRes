@@ -87,7 +87,6 @@ class SOSViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         queryset = SOS.objects.filter(disaster__status = True)
-        print queryset
         if self.request.user.is_superuser:
             queryset = queryset.filter(disaster__verified = False)
         else:
@@ -115,7 +114,6 @@ class SOSViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(disaster=disaster)
 
         else:
-            print queryset
             queryset = queryset.filter(user = self.request.user)
             
         return queryset
