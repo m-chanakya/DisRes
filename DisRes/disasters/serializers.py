@@ -17,6 +17,7 @@ class SOSSerializer(serializers.ModelSerializer):
         exclude = ('user', 'disaster')
         
 class ResponseSerializer(serializers.ModelSerializer):
+    sos = SOSSerializer()
+    org = OrganisationSerializer()
     class Meta:
         model = Response
-        exclude = ('sos', 'org')
