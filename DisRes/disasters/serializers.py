@@ -9,12 +9,10 @@ class DisasterSerializer(serializers.ModelSerializer):
 class ObservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Observation
-        exclude = ('user', 'disaster')
         
 class SOSSerializer(serializers.ModelSerializer):
     class Meta:
         model = SOS
-        exclude = ('user',)
         
 class ResponseSerializer(serializers.ModelSerializer):
     sos = SOSSerializer()
