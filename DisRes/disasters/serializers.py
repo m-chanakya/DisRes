@@ -14,7 +14,7 @@ class ObservationSerializer(serializers.ModelSerializer):
 class SOSSerializer(serializers.ModelSerializer):
     class Meta:
         model = SOS
-        exclude = ('user', 'disaster')
+        exclude = ('user',)
         
 class ResponseSerializer(serializers.ModelSerializer):
     sos = SOSSerializer()
