@@ -7,22 +7,21 @@ class DisasterSerializer(serializers.ModelSerializer):
         model = Disaster
         
 class ObservationSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    disaster = DisasterSerializer()
+    dis_type = serializers.CharField(source='disaster.dis_type')
     class Meta:
         model = Observation
-        extra_kwargs = { 'user': {'read_only': True}, 'disaster': {'read_only': True}}
+        exclude = ('user', 'disaster')
         
 class SOSSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    disaster = DisasterSerializer()
+    dis_type = serializers.CharField(source='disaster.dis_type')
     class Meta:
         model = SOS
-        extra_kwargs = { 'user': {'read_only': True}, 'disaster': {'read_only': True}}
+        exclude = ('user', 'disaster')
         
 class ResponseSerializer(serializers.ModelSerializer):
-    sos = SOSSerializer()
-    org = OrganisationSerializer()
+    sos_id = serializers.CharField(source='sos.id')
+    org_name = serializers.CharField(source='org.org_name', read_only=True)
+    org_type = serializers.CharField(source='org.org_type', read_only=True)
     class Meta:
         model = Response
-        extra_kwargs = {'org': {'read_only': True}}
+        exclude = ('org', 'sos')

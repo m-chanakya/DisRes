@@ -154,7 +154,7 @@ class ResponseViewSet(viewsets.ModelViewSet):
         return queryset
     
     def perform_create(self, serializer):
-        sos = self.request.data.pop("sos")
+        sos = self.request.data.pop("sos_id")
         sos = SOS.objects.get(pk=sos)
         org = self.request.user.organisation
         serializer.save(sos = sos, org = org)
