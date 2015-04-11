@@ -45,18 +45,18 @@ INSTALLED_APPS = (
 CORS_ALLOW_CREDENTIALS = True
 
 
-CORS_ORIGIN_WHITELIST = ( 
+CORS_ORIGIN_WHITELIST = (
         'localhost:9000',
-        )   
+        )
 
-CORS_ALLOW_HEADERS = ( 
+CORS_ALLOW_HEADERS = (
         'x-requested-with',
         'content-type',
         'accept',
         'origin',
         'authorization',
         'x-csrftoken'
-        )   
+        )
 
 CORS_ALLOW_METHODS = (
         'GET',

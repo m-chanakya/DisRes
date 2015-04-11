@@ -38,8 +38,8 @@ class DisasterViewSet(viewsets.ModelViewSet):
             return queryset
         else:
             queryset = queryset.filter(verified = True)
-        lat = self.request.META.get('lat', None)
-        lon = self.request.META.get('lon', None)
+        lat = self.request.META.get('HTTP_LAT', None)
+        lon = self.request.META.get('HTTP_LON', None)
         if lat is not None and lon is not None:
             ids = []
             for dis in queryset:
@@ -60,7 +60,7 @@ class ObservationViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(disaster__verified = False)
         else:
             queryset = queryset.filter(disaster__verified = True)
-        disaster = self.request.META.get('disaster', None)
+        disaster = self.request.META.get('HTTP_DISASTER', None)
         if disaster is not None:
             disaster = Disaster.objects.get(pk=disaster)
             queryset = queryset.filter(disaster=disaster)
@@ -108,7 +108,7 @@ class SOSViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(pk__in=ids)
 
         elif self.request.user.is_superuser:
-            disaster = self.request.META.get('disaster', None)
+            disaster = self.request.META.get('HTTP_DISASTER', None)
             if disaster is not None:
                 disaster = Disaster.objects.get(pk=disaster)
                 queryset = queryset.filter(disaster=disaster)
@@ -143,8 +143,8 @@ class ResponseViewSet(viewsets.ModelViewSet):
             if resp.sos.disaster.status == True and resp.sos.disaster.verified == True:
                 ids.append(resp.id)
         queryset = Response.objects.filter(pk__in = ids)
-        sos = self.request.META.get('sos', None)
-        disaster = self.request.META.get('disaster', None)
+        sos = self.request.META.get('HTTP_SOS', None)
+        disaster = self.request.META.get('HTTP_DISASTER', None)
         if sos is not None:
             sos = SOS.objects.get(pk=sos)
             queryset = queryset.filter(sos=sos)
