@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'password', 'email')
         extra_kwargs = { 'password': {'write_only': True} }
-        
+
     def create(self, validated_data):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
@@ -46,6 +46,12 @@ class OrganisationListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organisation
         fields = ('id', 'org_name', 'org_type', 'mobile')
+
+class OrganisationEmailSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source='user.email')
+    class Meta:
+        model = Organisation
+        fields = ('email',)
 
 class OrganisationSerializer(serializers.ModelSerializer):
     user = UserSerializer()

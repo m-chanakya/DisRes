@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from profiles.serializers import *
 from profiles.models import Organisation
+from disasters.models import Disaster
 from django.contrib.auth.models import User
 from profiles.permissions import *
 
@@ -35,9 +36,38 @@ class OrganisationViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOrganisationSelf,)
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        disaster = self.request.META.get('HTTP_DISASTER', None)
+        if disaster:
+            return OrganisationEmailSerializer
+        elif self.action == 'list':
             return OrganisationListSerializer
         return OrganisationSerializer
+
+    def get_queryset(self):
+        queryset = Organisation.objects.all()
+        disaster = self.request.META.get('HTTP_DISASTER', None)
+        if disaster:
+            disaster = Disaster.objects.get(pk=disaster)
+            types = ['P', 'H', 'NGOR', 'NGOM']
+            d_type = disaster.dis_type
+            if d_type == 'EQ':
+                types.extend(['EQ'])
+            elif d_type == 'FI':
+                types.extend(['FI'])
+            elif d_type == 'FL':
+                types.extend(['FL', 'NGOS'])
+            elif d_type == 'TSU':
+                types.extend(['FL', 'NGOS'])
+            elif d_type == 'CYC':
+                types.extend(['CYC', 'NGOS'])
+            elif d_type == 'LS':
+                types.extend(['NGOS'])
+            ids = []
+            for org in Organisation.objects.all():
+                if org.org_type in types:
+                    ids.append(org.id)
+            queryset = queryset.filter(pk__in=ids)
+        return queryset
 
     def perform_create(self, serializer):
         instance = serializer.save()
