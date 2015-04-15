@@ -45,7 +45,7 @@ class OrganisationListSerializer(serializers.ModelSerializer):
     mobile = serializers.CharField(source='user.username')
     class Meta:
         model = Organisation
-        fields = ('id', 'org_name', 'org_type', 'mobile')
+        fields = ('id', 'org_name', 'org_type', 'mobile', 'latitude', 'longitude')
 
 class OrganisationEmailSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email')

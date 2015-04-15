@@ -3,6 +3,7 @@ from rest_framework import routers
 from profiles.views import *
 from disasters.views import *
 from django.contrib import admin
+from django.conf import settings
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -21,4 +22,7 @@ urlpatterns = [
     #url('responses/(?P<disaster>\d+)/(?P<sos>\d+)/$', ResponseViewSet.as_view()),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-]
+    ]
+if settings.DEBUG:
+        # static files (images, css, javascript, etc.)
+        urlpatterns += patterns('', (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}))

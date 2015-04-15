@@ -115,7 +115,6 @@ class SOSViewSet(viewsets.ModelViewSet):
 
         else:
             queryset = queryset.filter(user = self.request.user)
-
         return queryset
 
     def perform_create(self, serializer):
